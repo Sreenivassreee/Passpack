@@ -1,16 +1,17 @@
 
+import { useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import viteLogo from '/vite.svg'
 
-export const Login = () => {
+export const Login = ({ userName, getPassword }: any) => {
+    const [passsword, setPassword] = useState<string | undefined>()
     return <div className='flex flex-col justify-center '>
         <div className='flex items-center justify-center'>
-            <img className='w-28 mb-10' src={viteLogo} alt="Vite logo" />
+            <img className='mb-10 w-28' src={viteLogo} alt="Vite logo" />
         </div>
-        <h1 className='m-4'>sreenivascse@gmail.com</h1>
-        <Input className='rounded-lg m-4'  type="Password" placeholder="Passsword" />
-        <Button className='m-4'>Click me</Button>
-
+        <h1 className='m-4'>{userName}</h1>
+        <Input value={passsword} onChange={(e) => setPassword(e.target.value)} className='m-4 rounded-lg' type="Password" placeholder="Passsword" />
+        <Button className='m-4' onClick={(e:any)=>getPassword(passsword)}>Unlock</Button>
     </div>
 }
