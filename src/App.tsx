@@ -35,17 +35,22 @@ function App() {
     }
 
   }
-  const decriptText = async ({ user }: { user: string }) => {
+  const decriptText = async ({ user, password }: { user: string, password: string }) => {
     console.log(user)
     console.log(serverUser)
-    const res = decription()
-    console.log(res)
-    setText(JSON.stringify(res))
-    navigate(`/${user}`);
-
-    // const newWindow:any = window.open(`http://localhost:5173/${user}`, '_blank', 'noopener,noreferrer')
-
-    // if (newWindow) newWindow.opener = null
+    const res = decription({ etext: serverUser.etext, password })
+    if (res != false) {
+      console.log("[res]", res)
+      setText(JSON.stringify(res))
+      localStorage.setItem("etext", serverUser.etext)
+      localStorage.setItem("pass", password)
+      const newWindow: any = window.open(`http://localhost:5173/${user}`, '_blank', 'noopener,noreferrer')
+      if (newWindow) newWindow.opener = null
+    } else {
+      if (typeof window === 'object') {
+        await chrome.action.openPopup()
+      };
+    }
 
   }
 
@@ -57,9 +62,12 @@ function App() {
     const newData = await createFirebaseDetails({ user: user.user })
     if (newData) {
       setUser(user.user)
-      const newWindow = window.open(`http://localhost:5173/${user.user}`, '_blank', 'noopener,noreferrer')
-      if (newWindow) newWindow.opener = null
+      // const newWindow = window.open(`http://localhost:5173/${user.user}`, '_blank', 'noopener,noreferrer')
+      // if (newWindow) newWindow.opener = null
       localStorage.setItem('user', user.user)
+
+      setText(JSON.stringify("NEW USER"))
+      navigate(`/${user.user}`);
 
       setUser(null)
     }
@@ -69,7 +77,7 @@ function App() {
   }
   return <Login userName={user} getPassword={(e: string) => {
     setPassword(e)
-    decriptText({ user })
+    decriptText({ user, password: e })
   }} />
 
 }

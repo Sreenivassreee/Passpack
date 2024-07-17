@@ -1,17 +1,45 @@
-import { useContext, useState } from "react";
-import { MyContext } from "../lib/context/MyContext";
+import { useEffect, useState } from "react";
 import { updateFirebaseDetails } from "../lib/firebase";
-import { encription } from "../lib/web3";
+import { decription, encription } from "../lib/web3";
 
 export const HomePage = () => {
-    const { text } = useContext(MyContext);
-    const [planText, setPlainText] = useState<string | undefined>(text)
+    // const { text } = useContext(MyContext);
+    const [planText, setPlainText] = useState<string | undefined>()
+    const [password] = useState('Sree@123')
     const [etext, setEtext] = useState<string | undefined>()
     const user = location.pathname.split("/")[1]
+    const pass = localStorage.getItem('pass') ?? ""
+    const localEtext = localStorage.getItem('etext') ?? ''
+
+    const openExtensionPopup = async () => {
+        /*ts-ignore*/
+        
+    };
+    if (!pass) {
+        openExtensionPopup()
+    }
+
+
+    useEffect(() => {
+        const res = decription({ etext: localEtext, password: pass })
+        if (res != false) {
+            setPlainText(res)
+        } else {
+            openExtensionPopup()
+        }
+        return (() => {
+            localStorage.setItem("etext", "")
+            localStorage.setItem("pass", '')
+        })
+    }, [])
+
+
     const onSave = async () => {
-        setPlainText("SRENNIVDAS")
-        const etext = encription({ text: planText ?? '' })
-        const res = await updateFirebaseDetails({ user, etext: etext ?? '' })
+        const tempEtext = encription({ text: planText ?? '', password })
+
+        const res = await updateFirebaseDetails({ user, etext: tempEtext ?? '' })
+        setEtext(tempEtext)
+        console.log("[etext]", etext)
         console.log("updateFirebaseDetails", res)
     }
     const onClose = () => {
@@ -19,9 +47,9 @@ export const HomePage = () => {
     }
     console.log("planText", planText)
 
-    console.log(text, "---temp")
     return <>
-        <p>{planText}</p>
+        {planText && <p>{planText}</p>}
+        <input type="text" value={planText} onChange={(e) => { setPlainText(e.target.value) }} />
         <button onClick={onSave}>Save</button>
         <button onClick={onClose}>Close</button>
 
