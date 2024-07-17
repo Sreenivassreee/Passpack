@@ -14,6 +14,7 @@ export type TUser = {
 export const SignUp = ({onSignUp}:any) => {
     const [user, setUser] = useState<TUser | undefined>()
     const [error, setError] = useState<string | undefined>()
+    
     const SignUp=()=>{
         if(user?.password ===user?.confirmPassword){
             onSignUp(user)
@@ -37,7 +38,7 @@ console.log(user)
         <Input className='my-1 rounded-lg ' name='password' onChange={setUserDetails} type="Password" placeholder="Passsword" />
         <Input className='my-1 rounded-lg ' name='confirmPassword' onChange={setUserDetails} type="Password" placeholder="confirm Passsword" />
         <span className='text-sm bg-red-500 '>{error}</span>
-        <Button className='my-1' onClick={(e)=>SignUp()}>Signup</Button>
+        <Button className='my-1' onClick={()=>SignUp()}>Signup</Button>
 
     </div>
 }

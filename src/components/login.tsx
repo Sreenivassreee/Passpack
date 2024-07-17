@@ -12,6 +12,6 @@ export const Login = ({ userName, getPassword }: any) => {
         </div>
         <h1 className='m-4'>{userName}</h1>
         <Input value={passsword} onChange={(e) => setPassword(e.target.value)} className='m-4 rounded-lg' type="Password" placeholder="Passsword" />
-        <Button className='m-4' onClick={(e:any)=>getPassword(passsword)}>Unlock</Button>
+        <Button className='m-4' onClick={()=>getPassword(passsword)}>Unlock</Button>
     </div>
 }

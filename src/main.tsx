@@ -5,15 +5,12 @@ import App from './App'
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from './components/HomePage';
+import { LoginHome } from './components/LoginHome';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />}/>
-          <Route path="/:userId" element={<HomePage/>} />
-      </Routes>
-    </BrowserRouter>
+    
+    <LoginHome/>
 
   </React.StrictMode>,
 )
